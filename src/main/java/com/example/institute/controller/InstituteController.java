@@ -22,4 +22,9 @@ public class InstituteController {
         instituteService.getCourseById(id);
         return new ResponseEntity<>(id,HttpStatus.OK);
     }
+    @PutMapping("/Update/{id}")
+    public ResponseEntity<String> updateCourseById(@RequestBody Institute institute){
+       return new ResponseEntity<>("Hello updated",HttpStatus.OK);
+    }
+
 }
