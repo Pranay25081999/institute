@@ -44,5 +44,6 @@ public class Stundents {
     @ManyToOne
     @JoinColumn(name="courseId")
     private Institute institute;
+    //Doi
 
 }
