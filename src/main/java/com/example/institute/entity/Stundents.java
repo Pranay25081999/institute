@@ -20,30 +20,30 @@ public class Stundents {
         this.studentName = studentName;
     }
 
-    public Institute getInstitute() {
-        return institute;
-    }
-
-    public void setInstitute(Institute institute) {
-        this.institute = institute;
-    }
 
     @Override
     public String toString() {
         return "Stundents{" +
                 "studentId=" + studentId +
                 ", studentName='" + studentName + '\'' +
-                ", institute=" + institute +
+                ", courseDetails=" + courseDetails +
                 '}';
     }
 
+    public CourseDetails getCourseDetails() {
+        return courseDetails;
+    }
+
+    public void setCourseDetails(CourseDetails courseDetails) {
+        this.courseDetails = courseDetails;
+    }
+
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
     private int studentId;
     private String studentName;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="courseId")
-    private Institute institute;
+    private CourseDetails courseDetails;
 
 
 }

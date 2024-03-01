@@ -5,6 +5,8 @@ import com.example.institute.repository.StudentsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class StudentsService {
     @Autowired
@@ -14,7 +16,7 @@ public class StudentsService {
         return "";
     }
     public int getStudentById(int id){
-        studentsRepo.findById(id);
-        return id;
+        Optional<Stundents> byId =studentsRepo.findById(id);
+        return byId.get().getStudentId();
     }
 }
