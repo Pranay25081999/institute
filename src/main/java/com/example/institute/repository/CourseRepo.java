@@ -1,9 +1,10 @@
 package com.example.institute.repository;
 
-import com.example.institute.entity.Institute;
+import com.example.institute.entity.CourseDetails;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface InstituteRepo extends JpaRepository<Institute,Integer> {
+public interface CourseRepo extends JpaRepository<CourseDetails,Integer> {
 }
