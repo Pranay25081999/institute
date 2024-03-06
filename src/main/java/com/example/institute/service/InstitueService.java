@@ -6,16 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class InstitueService {
     @Autowired
     InstituteRepo instituteRepo;
+
     public String addInstitute(Institute institute){
         instituteRepo.save(institute);
         return "";
     }
-    public String getInstituteById(int id){
-        instituteRepo.findById(id);
-        return "";
+    public List<Institute> getInstituteAll(){
+        return instituteRepo.findAll();
     }
 }

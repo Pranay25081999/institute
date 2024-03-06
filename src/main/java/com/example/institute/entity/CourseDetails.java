@@ -1,6 +1,8 @@
 package com.example.institute.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
@@ -8,8 +10,12 @@ import java.util.List;
 @Table(name="coursetable")
 public class CourseDetails {
     @Id
+    @NotNull
     private int cousreId;
+    @NotNull
+    @Size(min=3,max = 20)
     private  String courseName;
+    @NotNull
     private String modeOfCourse;
 
     public String getModeOfCourse() {
@@ -20,16 +26,7 @@ public class CourseDetails {
         this.modeOfCourse = modeOfCourse;
     }
 
-    public List<Stundents> getStundentsList() {
-        return stundentsList;
-    }
 
-    public void setStundentsList(List<Stundents> stundentsList) {
-        this.stundentsList = stundentsList;
-    }
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "studentsList")
-    private List<Stundents> stundentsList;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "institueid")
     private Institute institute;
@@ -48,7 +45,6 @@ public class CourseDetails {
                 "cousreId=" + cousreId +
                 ", courseName='" + courseName + '\'' +
                 ", modeOfCourse='" + modeOfCourse + '\'' +
-                ", stundentsList=" + stundentsList +
                 ", courseDuration=" + courseDuration +
                 ", institute=" +institute+
                 '}';

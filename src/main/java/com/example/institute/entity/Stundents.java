@@ -1,6 +1,8 @@
 package com.example.institute.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity(name="studentstable")
 public class Stundents {
@@ -39,7 +41,10 @@ public class Stundents {
     }
 
     @Id
+    @NotNull(message = "studentId should not be null")
     private int studentId;
+   // @NotNull
+    //@Size(min=3,max=30,message = "studentName should not be less than 3 characters and not greater than 30 characters")
     private String studentName;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="courseId")
