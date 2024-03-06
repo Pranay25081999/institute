@@ -6,6 +6,8 @@ import com.example.institute.repository.CourseRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CourseService {
     @Autowired
@@ -14,8 +16,7 @@ public class CourseService {
         courseRepo.save(courseDetails);
         return "add";
     }
-    public int getCourseById(int id){
-        courseRepo.findById(id);
-        return id;
+    public List<CourseDetails> getCourseAll( ){
+        return courseRepo.findAll();
     }
 }
