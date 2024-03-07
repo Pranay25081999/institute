@@ -7,17 +7,15 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.util.UUID;
+
 @Entity
 @Table(name="institutetable")
 public class Institute {
+
   @Id
-  @NotNull
-  private int instituteId;
-  @NotNull
-  @Size(min=3,max = 30)
+  private String instituteId;
   private String instituteName;
-  @Email
-  @NotNull
   private String instituteEmail;
 
     @Override
@@ -32,11 +30,11 @@ public class Institute {
                 '}';
     }
 
-    public int getInstituteId() {
+    public String getInstituteId() {
         return instituteId;
     }
 
-    public void setInstituteId(int instituteId) {
+    public void setInstituteId(String instituteId) {
         this.instituteId = instituteId;
     }
 
@@ -79,12 +77,9 @@ public class Institute {
     public void setInstituteWebSite(String instituteWebSite) {
         this.instituteWebSite = instituteWebSite;
     }
-@NotNull
     private String instituteMobileNumber;
-    @NotNull
-    @Size(max=50)
+
   private String institueAddress;
-    @NotNull
   private String instituteWebSite;
 
 }

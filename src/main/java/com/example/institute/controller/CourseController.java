@@ -17,14 +17,26 @@ public class CourseController {
     @Autowired
     CourseService courseService;
    @PostMapping("/addCourse")
-   public ResponseEntity<String> createCourse(@Valid @RequestBody CourseDetails courseDetails){
-       courseService.addCourse(courseDetails);
-        return new ResponseEntity<>("course is added", HttpStatus.CREATED);
+   public ResponseEntity<String> createCourse(@Valid @RequestBody CourseDetails courseDetails) throws Exception {
+       try{
+           courseService.addCourse(courseDetails);
+           return new ResponseEntity<>("course is added", HttpStatus.CREATED);
+       }
+       catch (Exception e){
+           return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+       }
+
     }
     @GetMapping("/getCourse")
-            public List<CourseDetails> getCourses(){
-        return courseService.getCourseAll();
-            }
+    public List<CourseDetails> getCourses(){
+       return courseService.getCourseAll();
+   }
+   @GetMapping("/getCourseById/{id}")
+   public String getCourseById(String id){
+       String courseById = courseService.getCourseById(id);
+       return courseById;
+   }
+
 
 
     @PutMapping("/Update/{id}")

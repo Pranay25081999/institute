@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class InstitueService {
@@ -18,6 +19,11 @@ public class InstitueService {
         return "";
     }
     public List<Institute> getInstituteAll(){
+
         return instituteRepo.findAll();
+    }
+    public String getInstituteById(String id){
+        instituteRepo.findById(id);
+        return id;
     }
 }

@@ -6,11 +6,11 @@ import jakarta.validation.constraints.Size;
 
 @Entity(name="studentstable")
 public class Stundents {
-    public int getStudentId() {
+    public String getStudentId() {
         return studentId;
     }
 
-    public void setStudentId(int studentId) {
+    public void setStudentId(String studentId) {
         this.studentId = studentId;
     }
 
@@ -40,11 +40,8 @@ public class Stundents {
         this.courseDetails = courseDetails;
     }
 
-    @Id
-    @NotNull(message = "studentId should not be null")
-    private int studentId;
-   // @NotNull
-    //@Size(min=3,max=30,message = "studentName should not be less than 3 characters and not greater than 30 characters")
+   @Id
+    private String studentId;
     private String studentName;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="courseId")

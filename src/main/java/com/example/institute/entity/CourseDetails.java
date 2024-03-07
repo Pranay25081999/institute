@@ -5,18 +5,18 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name="coursetable")
 public class CourseDetails {
     @Id
-    @NotNull
-    private int cousreId;
-    @NotNull
-    @Size(min=3,max = 20)
+    UUID uuid=UUID.randomUUID();
+    private String cousreId=uuid.toString();
     private  String courseName;
-    @NotNull
     private String modeOfCourse;
+    private int courseDuration;
+    private String instituteId;
 
     public String getModeOfCourse() {
         return modeOfCourse;
@@ -26,17 +26,16 @@ public class CourseDetails {
         this.modeOfCourse = modeOfCourse;
     }
 
+  //  UUID uuid=UUID.randomUUID();
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "institueid")
-    private Institute institute;
 
-    public Institute getInstitute() {
-        return institute;
+
+    public String getInstituteId() {
+        return instituteId;
     }
 
-    public void setInstitute(Institute institute) {
-        this.institute = institute;
+    public void setInstituteId(String instituteId) {
+        this.instituteId = instituteId;
     }
 
     @Override
@@ -46,17 +45,13 @@ public class CourseDetails {
                 ", courseName='" + courseName + '\'' +
                 ", modeOfCourse='" + modeOfCourse + '\'' +
                 ", courseDuration=" + courseDuration +
-                ", institute=" +institute+
+                ",instituteId="+instituteId+
+               // ", institute=" +institute+
+
                 '}';
     }
 
-    public int getCousreId() {
-        return cousreId;
-    }
 
-    public void setCousreId(int cousreId) {
-        this.cousreId = cousreId;
-    }
 
     public String getCourseName() {
         return courseName;
@@ -74,5 +69,5 @@ public class CourseDetails {
         this.courseDuration = courseDuration;
     }
 
-    private int courseDuration;
+
 }

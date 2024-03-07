@@ -22,10 +22,10 @@ class StudentsServiceTest {
   public void getStudentByIdTest(){
         int id=1;
       Stundents stundents = new Stundents();
-      stundents.setStudentId(1);
-      when(studentsRepo.findById(id)).thenReturn(Optional.of(stundents));
-        int data=studentsService.getStudentById(id);
-        assertEquals(1,data);
+      stundents.setStudentId("");
+      when(studentsRepo.findById("")).thenReturn(Optional.of(stundents));
+      String data = studentsService.getStudentById("id");
+      assertEquals(1,data);
     }
 
 }

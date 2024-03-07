@@ -20,14 +20,14 @@ public class StudentsService {
             } else {
 
                 throw new Exception("studentName should not be empty");
-
             }
     }
-    public int getStudentById(int id){
-        Optional<Stundents> byId =studentsRepo.findById(id);
+    public String getStudentById(String id){
+        Optional<Stundents> byId = studentsRepo.findById(id);
         return byId.get().getStudentId();
     }
-    public List<Stundents> getAllStudents(){
+    public List<Stundents> getAllStudents()
+    {
         return studentsRepo.findAll();
     }
 }
