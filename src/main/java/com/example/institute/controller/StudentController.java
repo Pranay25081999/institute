@@ -23,13 +23,9 @@ public class StudentController {
         }catch (Exception e){
             return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
         }
-
-
-
-
     }
     @GetMapping("/getStudent/{id}")
-    public ResponseEntity<Integer> getStudentById(@PathVariable int id){
+    public ResponseEntity<String> getStudentById(@PathVariable String id){
         studentsService.getStudentById(id);
         return new ResponseEntity<>(id,HttpStatus.OK);
     }
