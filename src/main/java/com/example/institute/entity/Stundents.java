@@ -3,6 +3,9 @@ package com.example.institute.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.GenericGenerator;
+
+import java.util.UUID;
 
 @Entity(name="studentstable")
 public class Stundents {
@@ -28,24 +31,33 @@ public class Stundents {
         return "Stundents{" +
                 "studentId=" + studentId +
                 ", studentName='" + studentName + '\'' +
-                ", courseDetails=" + courseDetails +
+                ", courseId=" +courseId +
                 '}';
     }
 
-    public CourseDetails getCourseDetails() {
-        return courseDetails;
-    }
-
-    public void setCourseDetails(CourseDetails courseDetails) {
-        this.courseDetails = courseDetails;
-    }
-
    @Id
+   @GeneratedValue(generator = "uuid")
+   @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
+   @Column(name = "studentId", unique = true)
     private String studentId;
+    private String emailId;
+
+    public String getEmailId() {
+        return emailId;
+    }
+
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
+    }
+
     private String studentName;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="courseId")
-    private CourseDetails courseDetails;
+    private String courseId;
 
+    public String getCourseId() {
+        return courseId;
+    }
 
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
+    }
 }

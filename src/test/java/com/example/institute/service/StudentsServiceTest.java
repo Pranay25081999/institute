@@ -19,7 +19,7 @@ class StudentsServiceTest {
     @Mock
     StudentsRepo studentsRepo;
   @Test
-  public void getStudentByIdTest(){
+  public void getStudentByIdTest() throws Exception {
         int id=1;
       Stundents stundents = new Stundents();
       stundents.setStudentId("");

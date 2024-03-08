@@ -17,9 +17,14 @@ public class InstituteController {
     InstitueService institueService;
 
     @PostMapping("/addInstitute")
-    public ResponseEntity<String> createInsitute(@Valid @RequestBody Institute institute) {
-        institueService.addInstitute(institute);
-        return new ResponseEntity<>("institute added", HttpStatus.CREATED);
+    public ResponseEntity<String> createInsitute(@Valid @RequestBody Institute institute) throws Exception {
+        try {
+            institueService.addInstitute(institute);
+            return new ResponseEntity<>("institute added", HttpStatus.CREATED);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     @GetMapping("/getInstitute")
@@ -28,9 +33,14 @@ public class InstituteController {
         return institueService.getInstituteAll();
     }
 
-    @GetMapping("/getInstitue/{id}")
-    public String getInstituteById(String id) {
-        institueService.getInstituteById(id);
-        return id;
+    @GetMapping("/getInstitute/{id}")
+    public ResponseEntity<String> getInstituteById(@PathVariable String id) throws Exception {
+        try{
+            institueService.getInstituteById(id);
+            return new ResponseEntity<>(id,HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+
     }
 }

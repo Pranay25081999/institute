@@ -26,8 +26,12 @@ public class StudentController {
     }
     @GetMapping("/getStudent/{id}")
     public ResponseEntity<String> getStudentById(@PathVariable String id){
-        studentsService.getStudentById(id);
-        return new ResponseEntity<>(id,HttpStatus.OK);
+        try {
+            studentsService.getStudentById(id);
+            return new ResponseEntity<>(id, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
     }
     @GetMapping("/getAll")
     public List<Stundents> getAllStudents(){
