@@ -3,6 +3,7 @@ package com.example.institute.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
 import java.util.UUID;
@@ -11,8 +12,10 @@ import java.util.UUID;
 @Table(name="coursetable")
 public class CourseDetails {
     @Id
-    UUID uuid=UUID.randomUUID();
-    private String cousreId=uuid.toString();
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "courseId", unique = true)
+    private String cousreId;
     private  String courseName;
     private String modeOfCourse;
     private int courseDuration;

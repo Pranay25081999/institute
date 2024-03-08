@@ -32,16 +32,16 @@ public class CourseController {
        return courseService.getCourseAll();
    }
    @GetMapping("/getCourseById/{id}")
-   public String getCourseById(String id){
-       String courseById = courseService.getCourseById(id);
-       return courseById;
+   public ResponseEntity<String> getCourseById(@PathVariable String id) throws Exception {
+       try {
+           String courseById = courseService.getCourseById(id);
+           return new ResponseEntity<>("course  details are getting",HttpStatus.OK);
+       }
+       catch (Exception e){
+           return  new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+       }
+
    }
-
-
-
-    @PutMapping("/Update/{id}")
-    public ResponseEntity<String> updateCourseById(@RequestBody CourseDetails courseDetails ){
-       return new ResponseEntity<>("Hello updated",HttpStatus.OK);
-    }
+   
 
 }

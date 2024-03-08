@@ -2,6 +2,7 @@ package com.example.institute.service;
 
 import com.example.institute.entity.Stundents;
 import com.example.institute.repository.StudentsRepo;
+import com.example.institute.validations.StudentValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,19 +13,27 @@ import java.util.Optional;
 public class StudentsService {
     @Autowired
     StudentsRepo studentsRepo;
-    public String addStudent(Stundents stundents) throws Exception{
-
-            if (stundents.getStudentName() != null && !stundents.getStudentName().isEmpty()) {
-                 studentsRepo.save(stundents);
-                 return "";
-            } else {
-
-                throw new Exception("studentName should not be empty");
-            }
+    @Autowired
+    StudentValidation studentValidation;
+    public String addStudent(Stundents stundents) throws Exception {
+        studentValidation.studentValidation(stundents);
+        String emailId = stundents.getEmailId();
+        if (studentsRepo.findByEmailId(emailId)!=null) {
+            throw new Exception("This emailId is already registered ");
+        } else {
+            studentsRepo.save(stundents);
+        }
+        return "";
     }
-    public String getStudentById(String id){
+
+    public String getStudentById(String id) throws Exception {
         Optional<Stundents> byId = studentsRepo.findById(id);
-        return byId.get().getStudentId();
+        if(!byId.isEmpty()) {
+            return byId.get().getStudentId();
+        }
+        else{
+            throw new Exception("There is no student with this id");
+        }
     }
     public List<Stundents> getAllStudents()
     {
