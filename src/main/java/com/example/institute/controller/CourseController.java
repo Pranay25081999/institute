@@ -28,17 +28,20 @@ public class CourseController {
 
     }
     @GetMapping("/getCourse")
-    public List<CourseDetails> getCourses(){
-       return courseService.getCourseAll();
+   public ResponseEntity<List<CourseDetails>> getCourses(){
+    try {
+        return new ResponseEntity<>(courseService.getCourseAll(), HttpStatus.OK);
+    }catch (Exception e){
+        return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+    }
    }
    @GetMapping("/getCourseById/{id}")
-   public ResponseEntity<String> getCourseById(@PathVariable String id) throws Exception {
+   public ResponseEntity<CourseDetails> getCourseById(@PathVariable String id) throws Exception {
        try {
-           String courseById = courseService.getCourseById(id);
-           return new ResponseEntity<>("course  details are getting",HttpStatus.OK);
+           return new ResponseEntity<>(courseService.getCourseById(id).get(),HttpStatus.OK);
        }
        catch (Exception e){
-           return  new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+             return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
        }
 
    }

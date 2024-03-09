@@ -26,17 +26,23 @@ public class StudentsService {
         return "";
     }
 
-    public String getStudentById(String id) throws Exception {
+    public Optional<Stundents> getStudentById(String id) throws Exception {
         Optional<Stundents> byId = studentsRepo.findById(id);
         if(!byId.isEmpty()) {
-            return byId.get().getStudentId();
+            return byId;
         }
         else{
             throw new Exception("There is no student with this id");
         }
     }
-    public List<Stundents> getAllStudents()
-    {
-        return studentsRepo.findAll();
+    public List<Stundents> getAllStudents() throws Exception {
+        List<Stundents> all = studentsRepo.findAll();
+        if(!all.isEmpty()){
+             return studentsRepo.findAll();
+        }
+        else{
+            throw new Exception("There is no student ");
+        }
+
     }
 }
