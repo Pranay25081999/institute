@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -28,18 +29,22 @@ public class InstituteController {
     }
 
     @GetMapping("/getInstitute")
-    public List<Institute> getInstitute() {
+    public ResponseEntity<List<Institute>> getInstitute() {
+    try{
+        return new ResponseEntity<>(institueService.getInstituteAll(),HttpStatus.OK);
+    }catch (Exception e){
+        return  new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+    }
 
-        return institueService.getInstituteAll();
     }
 
     @GetMapping("/getInstitute/{id}")
-    public ResponseEntity<String> getInstituteById(@PathVariable String id) throws Exception {
+    public ResponseEntity<Institute> getInstituteById(@PathVariable String id) throws Exception {
         try{
-            institueService.getInstituteById(id);
-            return new ResponseEntity<>(id,HttpStatus.OK);
+         Optional<Institute> institute= institueService.getInstituteById(id);
+            return new ResponseEntity<>(institute.get(),HttpStatus.OK);
         }catch(Exception e){
-            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
     }

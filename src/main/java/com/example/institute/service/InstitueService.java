@@ -27,14 +27,21 @@ public class InstitueService {
         }
 
     }
-    public List<Institute> getInstituteAll(){
+    public List<Institute> getInstituteAll() throws Exception {
 
-        return instituteRepo.findAll();
+        List<Institute> all = instituteRepo.findAll();
+        if(!all.isEmpty()){
+            return all;
+        }
+        else{
+            throw new Exception("There is no isntitute");
+        }
     }
-    public String getInstituteById(String id) throws Exception {
+    public Optional<Institute> getInstituteById(String id) throws Exception {
+        Optional<Institute> byId = instituteRepo.findById(id);
 
-        if(!instituteRepo.findById(id).isEmpty()) {
-            return "get isntitute";
+         if(!instituteRepo.findById(id).isEmpty()) {
+            return byId;
         }
        else{
             throw new Exception("There is no institute with this id");

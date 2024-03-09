@@ -7,4 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StudentsRepo extends JpaRepository<Stundents,String> {
     Stundents findByEmailId(String emailId);
+    static void  me(){
+        System.out.println("Ho");
+    }
 }
