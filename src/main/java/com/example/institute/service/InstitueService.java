@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -25,26 +26,17 @@ public class InstitueService {
             instituteRepo.save(institute);
             return "institute is added";
         }
-
     }
-    public List<Institute> getInstituteAll() throws Exception {
-
-        List<Institute> all = instituteRepo.findAll();
-        if(!all.isEmpty()){
-            return all;
-        }
-        else{
-            throw new Exception("There is no isntitute");
-        }
+    public List<Institute> getInstituteAll()
+    {
+        return instituteRepo.findAll();
     }
-    public Optional<Institute> getInstituteById(String id) throws Exception {
+    public Institute getInstituteById(String id) {
         Optional<Institute> byId = instituteRepo.findById(id);
-
-         if(!instituteRepo.findById(id).isEmpty()) {
-            return byId;
-        }
-       else{
-            throw new Exception("There is no institute with this id");
+        if(byId.isPresent()) {
+            return byId.get();
+        } else{
+            throw new NoSuchElementException("There is no institute with this id");
         }
     }
 }
