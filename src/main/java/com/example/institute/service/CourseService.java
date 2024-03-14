@@ -3,42 +3,41 @@ package com.example.institute.service;
 import com.example.institute.entity.CourseDetails;
 import com.example.institute.repository.CourseRepo;
 import com.example.institute.validations.CourseValidation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 @Service
+@RequiredArgsConstructor
 public class CourseService {
-    @Autowired
-    CourseRepo courseRepo;
-    @Autowired
-    CourseValidation courseValidation;
-    public CourseDetails addCourse(CourseDetails courseDetails) throws Exception {
+  private final CourseRepo courseRepo;
+
+  private final CourseValidation courseValidation;
+    public String addCourse(CourseDetails courseDetails) throws Exception {
         courseValidation.courseValidation(courseDetails);
         String courseName = courseDetails.getCourseName();
         if(courseRepo.findByCourseName(courseName)!=null){
             throw new Exception("course already exist");
         }
-        else{
-            return courseRepo.save(courseDetails);
+        CourseDetails save = courseRepo.save(courseDetails);
+        if(save!=null){
+            return save.getInstituteId();
+        }else {
+            throw new Exception("unable to save course"+courseName);
         }
     }
-    public List<CourseDetails> getCourseAll( ) throws Exception {
-        List<CourseDetails> all = courseRepo.findAll();
-        if(!all.isEmpty()){
-            return all;
-        }
-        else{
-            throw new Exception("There is no course");
-        }
+    public List<CourseDetails> getCourseAll( ) {
+         return courseRepo.findAll();
     }
-    public Optional<CourseDetails> getCourseById(String id) throws Exception {
+    public CourseDetails getCourseById(String id)  {
     Optional<CourseDetails> courseDetails=courseRepo.findById(id);
-        if(!courseRepo.findById(id).isEmpty()){
-            return courseDetails;
+        if(courseDetails.isPresent()){
+            return courseDetails.get();
         }
         else {
-            throw new Exception("There is no course with this id");
+            throw new NoSuchElementException("There is no course with this id");
         }
     }
 }

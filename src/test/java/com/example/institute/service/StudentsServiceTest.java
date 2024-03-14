@@ -4,6 +4,7 @@ import com.example.institute.entity.Stundents;
 import com.example.institute.repository.StudentsRepo;
 import com.example.institute.validations.StudentValidation;
 import jakarta.validation.constraints.NotNull;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -11,11 +12,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class StudentsServiceTest {
@@ -25,77 +25,55 @@ class StudentsServiceTest {
     StudentsRepo studentsRepo;
     @Mock
     StudentValidation studentValidation;
-
+    Stundents stundents = new Stundents();
     @Test
-    public void addInstituteTest() throws Exception {
-
-        Stundents stundents = new Stundents();
+    @BeforeEach
+    void setUp(){
         stundents.setEmailId("vis@gmail.com");
         stundents.setStudentName("vishwa");
         stundents.setCourseId("1");
         stundents.setStudentId("1");
+    }
+    @Test
+     void addStudentTest() throws Exception {
         studentValidation.studentValidation(stundents);
         when(studentsRepo.save(stundents)).thenReturn(stundents);
         String s = studentsService.addStudent(stundents);
-        assertEquals(false, !s.isEmpty());
-
+        assertEquals(stundents.getStudentId(),s);
+    }
+    @Test
+    void addStudentTestWithFindThrow() throws Exception {
+        studentValidation.studentValidation(stundents);
+        when(studentsRepo.findByEmailId(stundents.getEmailId())).thenReturn(stundents);
+        assertThrows(Exception.class,()->{studentsService.addStudent(stundents);});
+    }
+    @Test
+    void addStudentTestWithNegative() throws Exception {
+        studentValidation.studentValidation(stundents);
+        when(studentsRepo.save(stundents)).thenReturn(null);
+        assertThrows(Exception.class,()->{studentsService.addStudent(stundents);});
     }
 
     @Test
-    public void addInstituteTestWithNegative() throws Exception {
-        Stundents stundents = new Stundents();
-        String id = "1";
-        String emailId = "vishwa@gmail.com";
-        stundents.setEmailId(emailId);
-        stundents.setStudentName("vishwa");
-        stundents.setCourseId("1");
-        stundents.setStudentId("1");
-        //  Stundents stundents1 = studentsService.getStudentById(stundents.getCourseId()).get();
-        when(studentsRepo.save(stundents)).thenThrow(new RuntimeException());
-
-
-        assertThrows(Exception.class, () -> {
-            studentsService.addStudent(stundents);
-        });
+    void getStudentByIdTest() throws Exception {
+        when(studentsRepo.findById(stundents.getStudentId())).thenReturn(Optional.of(stundents));
+        String studentId = studentsService.getStudentById(stundents.getStudentId()).getStudentId();
+        assertEquals("1",studentId);
     }
 
     @Test
-    public void getStudentByIdTest() throws Exception {
-        String id = "1";
-        Stundents stundents = new Stundents();
-        stundents.setStudentId(id);
-        stundents.setCourseId(id);
-        when(studentsRepo.findById(id)).thenReturn(Optional.of(stundents));
-        Stundents stundents1 = studentsService.getStudentById(stundents.getCourseId()).get();
-        assertEquals("1", stundents1.getStudentId());
+     void givenStudentByIdWithNegative() throws Exception {
+        when(studentsRepo.findById(stundents.getStudentId())).thenReturn(Optional.empty());
+        assertThrows(NoSuchElementException.class,() ->{studentsService.getStudentById(stundents.getCourseId());});
     }
 
     @Test
-    public void givenStudentByIdWithNegative() throws Exception {
-        String id = "1";
-        Stundents stundents = new Stundents();
-        stundents.setStudentId(id);
-        when(studentsRepo.findById(id)).thenReturn(Optional.of(stundents));
-        assertThrows(Exception.class, () -> {
-            studentsService.getStudentById(stundents.getCourseId()).get();
-        });
-    }
-
-    @Test
-    public void getAllStudentsTest() throws Exception {
+     void getAllStudentsTest() throws Exception {
         String id = "1";
         Stundents stundents = new Stundents();
         stundents.setStudentId("1");
         when(studentsRepo.findAll()).thenReturn((List.of(stundents)));
         boolean empty = studentsService.getAllStudents().isEmpty();
         assertEquals(false, empty);
-    }
-
-    @Test
-    public void getAllStudentsTestWithNegative() throws Exception {
-        String id = "1";
-        Stundents stundents = new Stundents();
-        when(studentsRepo.findAll()).thenThrow(new RuntimeException());
-         assertThrows(Exception.class,() ->studentsService.getAllStudents().isEmpty());
     }
 }

@@ -3,46 +3,47 @@ package com.example.institute.service;
 import com.example.institute.entity.Stundents;
 import com.example.institute.repository.StudentsRepo;
 import com.example.institute.validations.StudentValidation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class StudentsService {
-    @Autowired
-    StudentsRepo studentsRepo;
-    @Autowired
-    StudentValidation studentValidation;
+
+    private final StudentsRepo studentsRepo;
+
+    private final StudentValidation studentValidation;
+
     public String addStudent(Stundents stundents) throws Exception {
         studentValidation.studentValidation(stundents);
         String emailId = stundents.getEmailId();
-        if (studentsRepo.findByEmailId(emailId)!=null) {
-            throw new Exception("This emailId is already registered ");
-        } else {
-            studentsRepo.save(stundents);
+        if (studentsRepo.findByEmailId(emailId) != null) {
+            throw new Exception("This " + emailId + " is already registered");
         }
-        return "";
+        Stundents savedStudent = studentsRepo.save(stundents);
+        if (savedStudent != null) {
+            return savedStudent.getStudentId();
+        } else {
+            throw new NoSuchElementException("Unable to save User : " + emailId);
+        }
+
     }
 
-    public Optional<Stundents> getStudentById(String id) throws Exception {
+    public Stundents getStudentById(String id) {
         Optional<Stundents> byId = studentsRepo.findById(id);
-        if(!byId.isEmpty()) {
-            return byId;
-        }
-        else{
-            throw new Exception("There is no student with this id");
+        if (byId.isPresent()) {
+            return byId.get();
+        } else {
+            throw new NoSuchElementException("There is no student with this id");
         }
     }
-    public List<Stundents> getAllStudents() throws Exception {
-        List<Stundents> all = studentsRepo.findAll();
-        if(!all.isEmpty()){
-             return studentsRepo.findAll();
-        }
-        else{
-            throw new Exception("There is no student ");
-        }
+
+    public List<Stundents> getAllStudents() {
+        return studentsRepo.findAll();
 
     }
 }

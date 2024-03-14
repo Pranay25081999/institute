@@ -1,6 +1,8 @@
 package com.example.institute.controller;
 
+import com.example.institute.apiRespponse.ApiResponseBuilder;
 import com.example.institute.entity.CourseDetails;
+import com.example.institute.model.ApiResponse;
 import com.example.institute.service.CourseService;
 
 import jakarta.validation.Valid;
@@ -9,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -20,31 +21,28 @@ public class CourseController {
    public ResponseEntity<String> createCourse(@Valid @RequestBody CourseDetails courseDetails) throws Exception {
        try{
            courseService.addCourse(courseDetails);
-           return new ResponseEntity<>("course is added", HttpStatus.CREATED);
+           return new ResponseEntity<>(courseDetails.getInstituteId(), HttpStatus.CREATED);
        }
        catch (Exception e){
-           return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+           return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
        }
 
     }
     @GetMapping("/getCourse")
-   public ResponseEntity<List<CourseDetails>> getCourses(){
+   public ResponseEntity<ApiResponse> getCourses(){
     try {
-        return new ResponseEntity<>(courseService.getCourseAll(), HttpStatus.OK);
+        return new ResponseEntity<>(ApiResponseBuilder.successResponse(courseService.getCourseAll()), HttpStatus.OK);
     }catch (Exception e){
-        return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(ApiResponseBuilder.failureResponse(e.getMessage()),HttpStatus.INTERNAL_SERVER_ERROR);
     }
    }
    @GetMapping("/getCourseById/{id}")
-   public ResponseEntity<CourseDetails> getCourseById(@PathVariable String id) throws Exception {
+   public ResponseEntity<ApiResponse> getCourseById(@PathVariable String id) throws Exception {
        try {
-           return new ResponseEntity<>(courseService.getCourseById(id).get(),HttpStatus.OK);
+           return new ResponseEntity<>(ApiResponseBuilder.successResponse(courseService.getCourseById(id)),HttpStatus.OK);
        }
        catch (Exception e){
-             return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+             return  new ResponseEntity<>(ApiResponseBuilder.failureResponse(e.getMessage()),HttpStatus.INTERNAL_SERVER_ERROR);
        }
-
    }
-   
-
 }

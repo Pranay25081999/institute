@@ -1,15 +1,13 @@
 package com.example.institute.controller;
-
+import com.example.institute.apiRespponse.ApiResponseBuilder;
 import com.example.institute.entity.Institute;
+import com.example.institute.model.ApiResponse;
 import com.example.institute.service.InstitueService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -21,31 +19,25 @@ public class InstituteController {
     public ResponseEntity<String> createInsitute(@Valid @RequestBody Institute institute) throws Exception {
         try {
             institueService.addInstitute(institute);
-            return new ResponseEntity<>("institute added", HttpStatus.CREATED);
+            return new ResponseEntity<>(institute.getInstituteId(), HttpStatus.CREATED);
         }catch (Exception e){
-            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
-
     @GetMapping("/getInstitute")
-    public ResponseEntity<List<Institute>> getInstitute() {
+    public ResponseEntity<ApiResponse> getInstitute(){
     try{
-        return new ResponseEntity<>(institueService.getInstituteAll(),HttpStatus.OK);
+        return new ResponseEntity<>(ApiResponseBuilder.successResponse(institueService.getInstituteAll()),HttpStatus.OK);
     }catch (Exception e){
-        return  new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+        return  new ResponseEntity<>(ApiResponseBuilder.failureResponse(e.getMessage()),HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
     }
-
     @GetMapping("/getInstitute/{id}")
-    public ResponseEntity<Institute> getInstituteById(@PathVariable String id) throws Exception {
+    public ResponseEntity<ApiResponse> getInstituteById(@PathVariable String id) throws Exception {
         try{
-         Optional<Institute> institute= institueService.getInstituteById(id);
-            return new ResponseEntity<>(institute.get(),HttpStatus.OK);
+            return new ResponseEntity<>(ApiResponseBuilder.successResponse(institueService.getInstituteById(id)),HttpStatus.OK);
         }catch(Exception e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(ApiResponseBuilder.failureResponse(e.getMessage()),HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
 }
