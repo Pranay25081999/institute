@@ -2,6 +2,7 @@ package com.example.institute.controller;
 import com.example.institute.entity.Stundents;
 import com.example.institute.model.ApiResponse;
 import com.example.institute.service.StudentsService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,7 +35,7 @@ import static org.mockito.Mockito.when;
     }
 
     @Test
-     void getStudentByIdTest() {
+     void getStudentByIdTest() throws JsonProcessingException {
         String studentId = stundents.getStudentId();
         when(studentsService.getStudentById(studentId)).thenReturn(stundents);
         ResponseEntity<ApiResponse> studentById = studentController.getStudentById(studentId);

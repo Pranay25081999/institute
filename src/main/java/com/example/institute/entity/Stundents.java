@@ -3,12 +3,21 @@ package com.example.institute.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.UUID;
+//@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 
 @Entity(name="studentstable")
 public class Stundents {
+
+
+
     public String getStudentId() {
         return studentId;
     }
